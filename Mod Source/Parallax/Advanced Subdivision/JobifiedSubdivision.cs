@@ -153,7 +153,7 @@ namespace Parallax
                 isProcessingSubdivision = false;
 
                 DispatchMeshGeneration();
-                DispatchTriangleReadback(trisReader.ComputeItemCount() * 3);
+                DispatchTriangleReadback(trisReader.Count() * 3);
 
                 isGeneratingMesh = true;
             }
@@ -223,9 +223,9 @@ namespace Parallax
         // we need one stream for EACH triangle to maintain order of addition in threes
         void DispatchMeshGeneration()
         {
-            newVerts = new NativeArray<float3>(storedVertTris.Length, Allocator.Persistent);
-            newNormals = new NativeArray<float3>(storedVertTris.Length, Allocator.Persistent);
-            newColors = new NativeArray<float4>(storedVertTris.Length, Allocator.Persistent);
+            newVerts = new NativeArray<float3>(storedVertTris.Count, Allocator.Persistent);
+            newNormals = new NativeArray<float3>(storedVertTris.Count, Allocator.Persistent);
+            newColors = new NativeArray<float4>(storedVertTris.Count, Allocator.Persistent);
 
             newTriangles = new NativeStream(meshTriangles.Length, Allocator.Persistent);
             newTrianglesWriter = newTriangles.AsWriter();

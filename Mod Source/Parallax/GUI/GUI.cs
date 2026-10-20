@@ -180,7 +180,7 @@ namespace Parallax
             // Show GUI if toggle enabled
             if (showGUI)
             {
-                window = GUILayout.Window(GetInstanceID(), window, DrawWindow, "Parallax GUI", HighLogic.Skin.window);
+                window = GUILayout.Window((int)(GetEntityId().GetRawData() & 0xFFFFFFFFu), window, DrawWindow, "Parallax GUI", HighLogic.Skin.window);
             }
         }
         static void DrawWindow(int windowID)

@@ -1,9 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net48</TargetFramework>
         <Platforms>AnyCPU;x86;x64</Platforms>
         <AssemblyName>ParallaxContinued</AssemblyName>
         <LangVersion>13</LangVersion>
+		<NoStdLib>true</NoStdLib>
+		<DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+		<ImplicitlyExpandNETStandardFacades>false</ImplicitlyExpandNETStandardFacades>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <DebugSymbols>true</DebugSymbols>
@@ -82,9 +85,17 @@
         <HintPath>$(GameDataPath)000_Harmony\0Harmony.dll</HintPath>
         <Private>false</Private>
       </Reference>
+      <Reference Include="UnityEngine">
+        <HintPath>$(GameDataPath)..\KSP_x64_Data\Managed\UnityEngine.dll</HintPath>
+        <Private>false</Private>
+      </Reference>
+      <Reference Include="UnityEngine.UICommonModule">
+        <HintPath>$(GameDataPath)..\KSP_x64_Data\Managed\UnityEngine.UICommonModule.dll</HintPath>
+        <Private>false</Private>
+      </Reference>
       <Reference Include="Assembly-CSharp">
         <HintPath>$(GameDataPath)..\KSP_x64_Data\Managed\Assembly-CSharp.dll</HintPath>
-        <Private>false</Private>
+        <Private>False</Private>
       </Reference>
       <Reference Include="Assembly-CSharp-firstpass">
         <HintPath>$(GameDataPath)..\KSP_x64_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
@@ -92,7 +103,7 @@
       </Reference>
       <Reference Include="Kopernicus">
         <HintPath>$(GameDataPath)Kopernicus\Plugins\Kopernicus.dll</HintPath>
-        <Private>false</Private>
+        <Private>False</Private>
       </Reference>
       <Reference Include="Kopernicus.Parser">
         <HintPath>$(GameDataPath)Kopernicus\Plugins\Kopernicus.Parser.dll</HintPath>
@@ -110,14 +121,12 @@
         <HintPath>$(GameDataPath)000_KSPBurst\Plugins\Microsoft.Extensions.FileSystemGlobbing.dll</HintPath>
         <Private>false</Private>
       </Reference>
-      <Reference Include="System.IO.Compression" />
-      <Reference Include="System.Runtime" />
       <Reference Include="System.Runtime.CompilerServices.Unsafe">
-        <HintPath>$(GameDataPath)000_KSPBurst\Plugins\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+        <HintPath>$(GameDataPath)..\KSP_x64_Data\Managed\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
         <Private>false</Private>
       </Reference>
       <Reference Include="Unity.Burst">
-        <HintPath>$(GameDataPath)000_KSPBurst\Plugins\Unity.Burst.dll</HintPath>
+        <HintPath>$(GameDataPath)..\KSP_x64_Data\Managed\Unity.Burst.dll</HintPath>
         <Private>false</Private>
       </Reference>
       <Reference Include="Unity.Burst.Unsafe">
@@ -125,7 +134,11 @@
         <Private>false</Private>
       </Reference>
       <Reference Include="Unity.Collections">
-        <HintPath>$(GameDataPath)000_KSPBurst\Plugins\Unity.Collections.dll</HintPath>
+        <HintPath>$(GameDataPath)..\KSP_x64_Data\Managed\Unity.Collections.dll</HintPath>
+        <Private>false</Private>
+      </Reference>
+      <Reference Include="UnityEngine.ScriptingModule">
+        <HintPath>$(GameDataPath)..\KSP_x64_Data\Managed\UnityEngine.ScriptingModule.dll</HintPath>
         <Private>false</Private>
       </Reference>
       <Reference Include="Unity.Jobs">
@@ -133,11 +146,7 @@
         <Private>false</Private>
       </Reference>
       <Reference Include="Unity.Mathematics">
-        <HintPath>$(GameDataPath)000_KSPBurst\Plugins\Unity.Mathematics.dll</HintPath>
-        <Private>false</Private>
-      </Reference>
-      <Reference Include="UnityEngine">
-        <HintPath>$(GameDataPath)..\KSP_x64_Data\Managed\UnityEngine.dll</HintPath>
+        <HintPath>$(GameDataPath)..\KSP_x64_Data\Managed\Unity.Mathematics.dll</HintPath>
         <Private>false</Private>
       </Reference>
       <Reference Include="UnityEngine.AnimationModule">
@@ -148,9 +157,13 @@
         <HintPath>$(GameDataPath)..\KSP_x64_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
         <Private>false</Private>
       </Reference>
+      <Reference Include="UnityEngine.BurstModule">
+        <HintPath>$(GameDataPath)..\KSP_x64_Data\Managed\UnityEngine.BurstModule.dll</HintPath>
+        <Private>False</Private>
+      </Reference>
       <Reference Include="UnityEngine.CoreModule">
         <HintPath>$(GameDataPath)..\KSP_x64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
-        <Private>false</Private>
+        <Private>False</Private>
       </Reference>
       <Reference Include="UnityEngine.ImageConversionModule">
         <HintPath>$(GameDataPath)..\KSP_x64_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
@@ -163,6 +176,14 @@
       <Reference Include="UnityEngine.InputLegacyModule">
         <HintPath>$(GameDataPath)..\KSP_x64_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
         <Private>false</Private>
+      </Reference>
+      <Reference Include="UnityEngine.ManagedKernelModule">
+        <HintPath>$(GameDataPath)..\KSP_x64_Data\Managed\UnityEngine.ManagedKernelModule.dll</HintPath>
+        <Private>False</Private>
+      </Reference>
+      <Reference Include="UnityEngine.MathematicsModule">
+        <HintPath>$(GameDataPath)..\KSP_x64_Data\Managed\UnityEngine.MathematicsModule.dll</HintPath>
+        <Private>False</Private>
       </Reference>
       <Reference Include="UnityEngine.PhysicsModule">
         <HintPath>$(GameDataPath)..\KSP_x64_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
@@ -184,6 +205,34 @@
         <HintPath>$(GameDataPath)..\KSP_x64_Data\Managed\UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
         <Private>false</Private>
       </Reference>
+	  <Reference Include="mscorlib">
+	    <HintPath>$(GameDataPath)..\KSP_x64_Data\Managed\mscorlib.dll</HintPath>
+        <Private>False</Private>
+	  </Reference>
+	  <Reference Include="netstandard">
+	    <HintPath>$(GameDataPath)..\KSP_x64_Data\Managed\netstandard.dll</HintPath>
+        <Private>False</Private>
+	  </Reference>
+      <Reference Include="System">
+	    <HintPath>$(GameDataPath)..\KSP_x64_Data\Managed\System.dll</HintPath>
+		<Private>false</Private>
+      </Reference>
+     <Reference Include="System.Core">
+	   <HintPath>$(GameDataPath)..\KSP_x64_Data\Managed\System.Core.dll</HintPath>
+	   <Private>false</Private>
+	 </Reference>
+     <Reference Include="System.Xml">
+	   <HintPath>$(GameDataPath)..\KSP_x64_Data\Managed\System.Xml.dll</HintPath>
+	   <Private>false</Private>
+	 </Reference>
+     <Reference Include="System.Xml.Linq">
+	   <HintPath>$(GameDataPath)..\KSP_x64_Data\Managed\System.Xml.Linq.dll</HintPath>
+	   <Private>false</Private>
+	 </Reference>
+     <Reference Include="System.IO.Compression">
+	   <HintPath>$(GameDataPath)..\KSP_x64_Data\Managed\System.IO.Compression.dll</HintPath>
+	   <Private>false</Private>
+	 </Reference>
 
       <!-- Publicizer-->
       <!-- PQS -->

@@ -84,13 +84,13 @@ namespace Parallax
         {
             if (showGUI)
             {
-                window = GUILayout.Window(GetInstanceID(), window, DrawWindow, "Parallax GUI", HighLogic.Skin.window);
+                window = GUILayout.Window((int)(GetEntityId().GetRawData() & 0xFFFFFFFFu), window, DrawWindow, "Parallax GUI", HighLogic.Skin.window);
 
                 if (!string.IsNullOrEmpty(tooltip))
                 {
                     hoverWindow.x = Event.current.mousePosition.x + 22;
                     hoverWindow.y = Event.current.mousePosition.y - hoverWindow.height / 2;
-                    hoverWindow = GUILayout.Window(GetInstanceID() + 1, hoverWindow, ShowTooltip, "Tooltip", HighLogic.Skin.window);
+                    hoverWindow = GUILayout.Window((int)(GetEntityId().GetRawData() & 0xFFFFFFFFu) + 1, hoverWindow, ShowTooltip, "Tooltip", HighLogic.Skin.window);
                 }
             }
         }
