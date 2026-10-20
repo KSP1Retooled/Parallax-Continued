@@ -317,23 +317,75 @@ namespace Parallax
 
             ResetMesh();
 
-            if (vertices.IsCreated) { vertices.Dispose(); }
-            if (normals.IsCreated) { normals.Dispose(); }
-            if (colors.IsCreated) { colors.Dispose(); }
-            if (triangles.IsCreated) { triangles.Dispose(); }
+            if (vertices.IsCreated)
+            {
+                vertices.Dispose();
+                vertices = default;
+            }
+            if (normals.IsCreated)
+            {
+                normals.Dispose();
+                normals = default;
+            }
+            if (colors.IsCreated)
+            {
+                colors.Dispose();
+                colors = default;
+            }
+            if (triangles.IsCreated)
+            {
+                triangles.Dispose();
+                triangles = default;
+            }
 
-            if (newVerts.IsCreated) { newVerts.Dispose(); }
-            if (newNormals.IsCreated) { newNormals.Dispose(); }
-            if (newColors.IsCreated) { newColors.Dispose(); }
-            if (outputTriIndices.IsCreated) { outputTriIndices.Dispose(); }
+            if (newVerts.IsCreated)
+            {
+                newVerts.Dispose();
+                newVerts = default;
+            }
+            if (newNormals.IsCreated)
+            {
+                newNormals.Dispose();
+                newNormals = default;
+            }
+            if (newColors.IsCreated)
+            {
+                newColors.Dispose();
+                newColors = default;
+            }
+            if (outputTriIndices.IsCreated)
+            {
+                outputTriIndices.Dispose();
+                outputTriIndices = default;
+            }
 
-            if (newTriangles.IsCreated) { newTriangles.Dispose(); }
-            if (meshTriangles.IsCreated) { meshTriangles.Dispose(); }
+            if (newTriangles.IsCreated)
+            {
+                newTriangles.Dispose();
+                newTriangles = default;
+            }
+            if (meshTriangles.IsCreated)
+            {
+                meshTriangles.Dispose();
+                meshTriangles = default;
+            }
 
-            if (storedVertTris.IsCreated) { storedVertTris.Dispose(); }
-            if (tris.IsCreated) { tris.Dispose(); }
+            if (storedVertTris.IsCreated)
+            {
+                storedVertTris.Dispose();
+                storedVertTris = default;
+            }
+            if (tris.IsCreated)
+            {
+                tris.Dispose();
+                tris = default;
+            }
 
-            if (frustumPlanes.IsCreated) { frustumPlanes.Dispose(); }
+            if (frustumPlanes.IsCreated)
+            {
+                frustumPlanes.Dispose();
+                frustumPlanes = default;
+            }
 
             if (hasIdentifier)
             {
