@@ -282,15 +282,39 @@ namespace Parallax
         }
         void FreePostMeshBuildResources()
         {
-            newVerts.Dispose();
-            newNormals.Dispose();
-            newColors.Dispose();
-            outputTriIndices.Dispose();
-            tris.Dispose();
+            if (newVerts.IsCreated)
+            {
+                newVerts.Dispose();
+                newVerts = default;
+            }
+            if (newNormals.IsCreated)
+            {
+                newNormals.Dispose();
+                newNormals = default;
+            }
+            if (newColors.IsCreated)
+            {
+                newColors.Dispose();
+                newColors = default;
+            }
+            if (outputTriIndices.IsCreated)
+            {
+                outputTriIndices.Dispose();
+                outputTriIndices = default;
+            }
+            if (tris.IsCreated)
+            {
+                tris.Dispose();
+                tris = default;
+            }
         }
         void FreePostReadbackResources()
         {
-            newTriangles.Dispose();
+            if (newTriangles.IsCreated)
+            {
+                newTriangles.Dispose();
+                newTriangles = default;
+            }
         }
         void ResetMesh()
         {
