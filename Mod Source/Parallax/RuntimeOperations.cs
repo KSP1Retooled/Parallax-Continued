@@ -204,7 +204,7 @@ namespace Parallax
                 cameraFrustumPlanes[i] = planes[i];
             }
 
-            if (SystemInfo.graphicsDeviceType != UnityEngine.Rendering.GraphicsDeviceType.Direct3D11)
+            if (!SystemInfo.usesReversedZBuffer)
             {
                 Camera farCam = FlightCamera.fetch.cameras[1];
                 planes[5].distance = farCam != null ? farCam.farClipPlane : 25000;

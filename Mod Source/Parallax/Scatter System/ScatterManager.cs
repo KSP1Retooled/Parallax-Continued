@@ -211,7 +211,7 @@ namespace Parallax
 
             // Schedule drawing instanced data to screen
 
-            if (SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Direct3D11)
+            if (SystemInfo.usesReversedZBuffer)
             {
                 foreach (ScatterRenderer renderer in activeScatterRenderers)
                 {
