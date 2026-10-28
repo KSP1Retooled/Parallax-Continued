@@ -46,6 +46,10 @@ namespace Parallax
         bool collidersAdded = false;
         public bool cleaned = false;
 
+        // For tracking the current generation on the scatter on this quad
+        // If the quad is cleaned up and reinitialized, we don't want to process any readbacks from the previous generation
+        int generation = 0;
+
         public ScatterData(ScatterSystemQuadData parent, Scatter scatter)
         {
             this.parent = parent;
@@ -88,7 +92,7 @@ namespace Parallax
             // Required values
             scatterShader.SetFloat(ParallaxScatterShaderProperties.planetRadiusID, parent.planetRadius);
             scatterShader.SetInt(ParallaxScatterShaderProperties.maxCountID, maxCount);
-            scatterShader.SetInt(ParallaxScatterShaderProperties.numberOfBiomesID, scatter.biomeCount);
+            scatterShader.SetInts(ParallaxScatterShaderProperties.biomeMaskID, scatter.biomeMask);
 
             scatterShader.SetVector(ParallaxScatterShaderProperties.planetNormalID, parent.planetNormal);
             scatterShader.SetVector(ParallaxScatterShaderProperties.localPlanetNormalID, parent.localPlanetNormal);
@@ -111,8 +115,7 @@ namespace Parallax
             scatterShader.SetBuffer(distributeKernel, ParallaxScatterShaderProperties.parentUVsBufferID, parent.sourceUVsBuffer);
             scatterShader.SetBuffer(distributeKernel, ParallaxScatterShaderProperties.parentDirsBufferID, parent.sourceDirsFromCenterBuffer);
             
-            scatterShader.SetTexture(distributeKernel, ParallaxScatterShaderProperties.biomeMapTextureID, ScatterManager.currentBiomeMap);
-            scatterShader.SetTexture(distributeKernel, ParallaxScatterShaderProperties.scatterBiomesTextureID, scatter.biomeControlMap);
+            scatterShader.SetTexture(distributeKernel, ParallaxScatterShaderProperties.biomeIndexMapTextureID, ScatterManager.biomeIndexMap);
 
             SetDistributionVars();
         }
@@ -265,7 +268,8 @@ namespace Parallax
             // Read this back to construct indirect dispatch args
             if (SystemInfo.supportsAsyncGPUReadback)
             {
-                AsyncGPUReadback.Request(objectLimits, OnDistributeComplete);
+                int requestGeneration = generation;
+                AsyncGPUReadback.Request(objectLimits, request => OnDistributeComplete(request, requestGeneration));
             }
             else
             {
@@ -273,12 +277,12 @@ namespace Parallax
             }
 
         }
-        public void OnDistributeComplete(AsyncGPUReadbackRequest request)
+        public void OnDistributeComplete(AsyncGPUReadbackRequest request, int requestGeneration)
         {
             // Data was cleaned up before generation completed - stop here
-            if (cleaned) 
-            { 
-                return; 
+            if (cleaned || requestGeneration != generation)
+            {
+                return;
             }
             count = request.GetData<int>().ToArray(); //Creates garbage, unfortunate
             realCount = count[0];
@@ -295,7 +299,7 @@ namespace Parallax
             // If we're paused, the colliders already exist
             if (CollidersEligible() && !collidersAdded)
             {
-                AsyncGPUReadback.Request(outputScatterDataBuffer, OnColliderReadbackComplete);
+                AsyncGPUReadback.Request(outputScatterDataBuffer, colliderRequest => OnColliderReadbackComplete(colliderRequest, requestGeneration));
             }
 
             // Initialise indirect args
@@ -339,7 +343,8 @@ namespace Parallax
             {
                 if (SystemInfo.supportsAsyncGPUReadback)
                 {
-                    AsyncGPUReadback.Request(outputScatterDataBuffer, OnColliderReadbackComplete);
+                    int requestGeneration = generation;
+                    AsyncGPUReadback.Request(outputScatterDataBuffer, colliderRequest => OnColliderReadbackComplete(colliderRequest, requestGeneration));
                 }
                 else
                 {
@@ -361,9 +366,9 @@ namespace Parallax
         }
 
         // Request the output buffer for collider processing
-        public void OnColliderReadbackComplete(AsyncGPUReadbackRequest req)
+        public void OnColliderReadbackComplete(AsyncGPUReadbackRequest req, int requestGeneration)
         {
-            if (cleaned || collidersAdded)
+            if (cleaned || collidersAdded || requestGeneration != generation)
             {
                 return;
             }
@@ -532,6 +537,7 @@ namespace Parallax
 
                 paused = true;
                 cleaned = true;
+                generation++;
 
                 if (eventAdded)
                 {
@@ -557,6 +563,8 @@ namespace Parallax
         {
             // Check against this in the readback to stop us from adding an event after the data is cleaned up
             cleaned = true;
+            paused = false;
+            generation++;
 
             // Remove event
             if (eventAdded)
@@ -568,6 +576,8 @@ namespace Parallax
             if (collidersAdded)
             {
                 CollisionManager.QueueOutgoingData(collisionData);
+                collisionData = null;
+                collidersAdded = false;
             }
 
             outputScatterDataBuffer?.Dispose();
