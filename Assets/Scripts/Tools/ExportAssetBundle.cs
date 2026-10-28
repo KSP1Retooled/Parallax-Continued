@@ -21,7 +21,8 @@ public class CreateAssetBundles
             return;
         }
 
-        var opts = BuildAssetBundleOptions.DeterministicAssetBundle | BuildAssetBundleOptions.ForceRebuildAssetBundle;
+        // DeterministicAssetBundle was removed, builds are always deterministic now
+        var opts = BuildAssetBundleOptions.ForceRebuildAssetBundle;
         BuildTarget[] platforms = { BuildTarget.StandaloneWindows, BuildTarget.StandaloneOSX, BuildTarget.StandaloneLinux64 };
         string[] platformExts = { "-windows", "-macosx", "-linux" };
 
@@ -64,11 +65,42 @@ public class CreateAssetBundles
                 }
             }
 
-            // Set the main asset to the first shader, or null if no shaders are found
-            Object mainAsset = shaderAssets.Count > 0 ? shaderAssets[0] : null;
+            // Selecting a folder also selects the shaders inside it, so remove duplicates
+            string[] assetPaths = shaderAssets.Select(asset => AssetDatabase.GetAssetPath(asset)).Distinct().ToArray();
 
-            #pragma warning disable CS0618
-            BuildPipeline.BuildAssetBundle(mainAsset, shaderAssets.ToArray(), path.Replace(".unity3d", platformExts[i] + ".unity3d"), opts, platforms[i]);
+            BuildShaderBundle(assetPaths, path.Replace(".unity3d", platformExts[i] + ".unity3d"), opts, platforms[i]);
+        }
+    }
+
+    // BuildPipeline.BuildAssetBundle was removed in Unity 6. Its replacement outputs a folder with manifests,
+    // so build into a temp folder and copy the bundle out
+    static void BuildShaderBundle(string[] assetPaths, string bundlePath, BuildAssetBundleOptions opts, BuildTarget platform)
+    {
+        string tempPath = FileUtil.GetUniqueTempPathInProject();
+        Directory.CreateDirectory(tempPath);
+
+        try
+        {
+            AssetBundleBuild build = new AssetBundleBuild
+            {
+                // Bundles loaded at the same time need unique names
+                assetBundleName = Path.GetFileNameWithoutExtension(bundlePath),
+                assetNames = assetPaths
+            };
+
+            AssetBundleManifest manifest = BuildPipeline.BuildAssetBundles(tempPath, new[] { build }, opts, platform);
+            string[] builtBundles = manifest != null ? manifest.GetAllAssetBundles() : new string[0];
+            if (builtBundles.Length == 0)
+            {
+                Debug.LogError("Failed to build shader bundle: " + bundlePath);
+                return;
+            }
+
+            File.Copy(Path.Combine(tempPath, builtBundles[0]), bundlePath, true);
+        }
+        finally
+        {
+            FileUtil.DeleteFileOrDirectory(tempPath);
         }
     }
 }
