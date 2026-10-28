@@ -130,12 +130,36 @@ namespace Parallax
         }
         void DisposeSourceData()
         {
-            if (vertices.IsCreated) { vertices.Dispose(); }
-            if (normals.IsCreated) { normals.Dispose(); }
-            if (colors.IsCreated) { colors.Dispose(); }
-            if (triangles.IsCreated) { triangles.Dispose(); }
-            if (meshTriangles.IsCreated) { meshTriangles.Dispose(); }
-            if (triOffsets.IsCreated) { triOffsets.Dispose(); }
+            if (vertices.IsCreated)
+            {
+                vertices.Dispose();
+                vertices = default;
+            }
+            if (normals.IsCreated)
+            {
+                normals.Dispose();
+                normals = default;
+            }
+            if (colors.IsCreated)
+            {
+                colors.Dispose();
+                colors = default;
+            }
+            if (triangles.IsCreated)
+            {
+                triangles.Dispose();
+                triangles = default;
+            }
+            if (meshTriangles.IsCreated)
+            {
+                meshTriangles.Dispose();
+                meshTriangles = default;
+            }
+            if (triOffsets.IsCreated) 
+            { 
+                triOffsets.Dispose();
+                triOffsets = default;
+            }
         }
         public void RefreshSourceData()
         {
@@ -235,7 +259,11 @@ namespace Parallax
             int thresholdCount = math.max(maxSubdivisionLevel, 1);
             if (sqrLevelThresholds.Length != thresholdCount)
             {
-                if (sqrLevelThresholds.IsCreated) { sqrLevelThresholds.Dispose(); }
+                if (sqrLevelThresholds.IsCreated) 
+                { 
+                    sqrLevelThresholds.Dispose();
+                    sqrLevelThresholds = default;
+                }
                 sqrLevelThresholds = new NativeArray<float>(thresholdCount, Allocator.Persistent);
             }
 
@@ -378,15 +406,47 @@ namespace Parallax
             CompleteAllJobs();
             DisposeSourceData();
 
-            if (storedVertTris.IsCreated) { storedVertTris.Dispose(); }
-            if (frustumPlanes.IsCreated) { frustumPlanes.Dispose(); }
-            if (sqrLevelThresholds.IsCreated) { sqrLevelThresholds.Dispose(); }
+            if (storedVertTris.IsCreated) 
+            { 
+                storedVertTris.Dispose(); 
+                storedVertTris = default; 
+            }
+            if (frustumPlanes.IsCreated) 
+            { 
+                frustumPlanes.Dispose();
+                frustumPlanes = default;
+            }
+            if (sqrLevelThresholds.IsCreated) 
+            { 
+                sqrLevelThresholds.Dispose(); 
+                sqrLevelThresholds = default;
+            }
 
-            if (newVerts.IsCreated) { newVerts.Dispose(); }
-            if (newNormals.IsCreated) { newNormals.Dispose(); }
-            if (newColors.IsCreated) { newColors.Dispose(); }
-            if (newTriangles.IsCreated) { newTriangles.Dispose(); }
-            if (newShortTriangles.IsCreated) { newShortTriangles.Dispose(); }
+            if (newVerts.IsCreated) 
+            { 
+                newVerts.Dispose();
+                newVerts = default;
+            }
+            if (newNormals.IsCreated) 
+            { 
+                newNormals.Dispose(); 
+                newNormals = default;
+            }
+            if (newColors.IsCreated) 
+            { 
+                newColors.Dispose(); 
+                newColors = default;
+            }
+            if (newTriangles.IsCreated) 
+            { 
+                newTriangles.Dispose();
+                newTriangles = default;
+            }
+            if (newShortTriangles.IsCreated) 
+            { 
+                newShortTriangles.Dispose();
+                newShortTriangles = default;
+            }
 
             isActive = false;
 

@@ -57,8 +57,15 @@ namespace Parallax
         {
             if (disposed) return;
             disposed = true;
-            if (lastDistances.IsCreated) lastDistances.Dispose();
-            if (quadLocalData.IsCreated) quadLocalData.Dispose();
+            if (lastDistances.IsCreated)
+            {
+                lastDistances.Dispose();
+                lastDistances = default;
+            }
+            if (quadLocalData.IsCreated)
+            {
+                quadLocalData.Dispose();
+            }
         }
     }
     /// <summary>
@@ -398,10 +405,12 @@ namespace Parallax
                 if (collidersToAdd[i].IsCreated)
                 {
                     collidersToAdd[i].Dispose();
+                    collidersToAdd[i] = default;
                 }
                 if (collidersToRemove[i].IsCreated)
                 {
                     collidersToRemove[i].Dispose();
+                    collidersToRemove[i] = default;
                 }
                 
             }
@@ -630,13 +639,36 @@ namespace Parallax
             Cleanup();
 
             // Dispose native resources
-            vesselPositions.Dispose();
-            vesselVelocitiesMagnitude.Dispose();
-            sqrVesselBounds.Dispose();
-
-            quadPositions.Dispose();
-            sqrQuadBounds.Dispose();
-            quadIDs.Dispose();
+            if (vesselPositions.IsCreated)
+            {
+                vesselPositions.Dispose();
+                vesselPositions = default;
+            }
+            if (vesselVelocitiesMagnitude.IsCreated)
+            {
+                vesselVelocitiesMagnitude.Dispose();
+                vesselVelocitiesMagnitude = default;
+            }
+            if (sqrVesselBounds.IsCreated)
+            {
+                sqrVesselBounds.Dispose();
+                sqrVesselBounds = default;
+            }
+            if (quadPositions.IsCreated)
+            {
+                quadPositions.Dispose();
+                quadPositions = default;
+            }
+            if (sqrQuadBounds.IsCreated)
+            {
+                sqrQuadBounds.Dispose();
+                sqrQuadBounds = default;
+            }
+            if (quadIDs.IsCreated)
+            {
+                quadIDs.Dispose();
+                quadIDs = default;
+            }
             Debug.Log("OnDestroy completed");
         }
     }

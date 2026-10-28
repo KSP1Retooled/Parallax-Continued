@@ -393,7 +393,11 @@ namespace Parallax
             NativeSlice<PositionData> slice2 = new NativeSlice<PositionData>(realData);
 
             slice2.CopyFrom(slice1);
-            data.Dispose();
+            if (data.IsCreated)
+            {
+                data.Dispose();
+                data = default;
+            }
 
             collisionData = new ScatterColliderData(parent, realData, scatter.collideableArrayIndex);
             CollisionManager.QueueIncomingData(collisionData);
@@ -428,7 +432,11 @@ namespace Parallax
             NativeSlice<PositionData> slice2 = new NativeSlice<PositionData>(realData);
             
             slice2.CopyFrom(slice1);
-            nativeData.Dispose();
+            if (nativeData.IsCreated)
+            {
+                nativeData.Dispose();
+                nativeData = default;
+            }
 
             collisionData = new ScatterColliderData(parent, realData, scatter.collideableArrayIndex);
             CollisionManager.QueueIncomingData(collisionData);
