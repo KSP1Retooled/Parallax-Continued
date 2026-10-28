@@ -64,6 +64,10 @@ namespace Parallax
                 activeButton.normal.textColor = HighLogic.Skin.label.normal.textColor;
                 activeButton.hover.textColor = HighLogic.Skin.label.normal.textColor * 1.25f;
 
+                // Create toolbar button
+                Texture buttonTexture = GameDatabase.Instance.GetTexture("ParallaxContinued/Textures/button", false);
+                button = ApplicationLauncher.Instance.AddModApplication(ShowToolbarGUI, HideToolbarGUI, IncrementBingus, Nothing, Nothing, Nothing, ApplicationLauncher.AppScenes.ALWAYS, buttonTexture);
+
                 initialized = true;
             }
         }
@@ -80,13 +84,13 @@ namespace Parallax
         {
             if (showGUI)
             {
-                window = GUILayout.Window((int)(GetEntityId().GetRawData() & 0xFFFFFFFFu), window, DrawWindow, "Parallax GUI", HighLogic.Skin.window);
+                window = GUILayout.Window(GetInstanceID(), window, DrawWindow, "Parallax GUI", HighLogic.Skin.window);
 
                 if (!string.IsNullOrEmpty(tooltip))
                 {
                     hoverWindow.x = Event.current.mousePosition.x + 22;
                     hoverWindow.y = Event.current.mousePosition.y - hoverWindow.height / 2;
-                    hoverWindow = GUILayout.Window((int)(GetEntityId().GetRawData() & 0xFFFFFFFFu) + 1, hoverWindow, ShowTooltip, "Tooltip", HighLogic.Skin.window);
+                    hoverWindow = GUILayout.Window(GetInstanceID() + 1, hoverWindow, ShowTooltip, "Tooltip", HighLogic.Skin.window);
                 }
             }
         }
@@ -361,6 +365,19 @@ namespace Parallax
                         }
                     }
                 }
+            }
+        }
+
+        static void IncrementBingus()
+        {
+            bingusCount++;
+            if (bingusCount % 10 == 0 && bingusCount > 0)
+            {
+                button.SetTexture(GameDatabase.Instance.GetTexture("ParallaxContinued/Textures/bingus", false));
+            }
+            else
+            {
+                button.SetTexture(GameDatabase.Instance.GetTexture("ParallaxContinued/Textures/button", false));
             }
         }
 
